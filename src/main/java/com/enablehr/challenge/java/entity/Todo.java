@@ -1,6 +1,5 @@
 package com.enablehr.challenge.java.entity;
 
-import lombok.Data;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Column;
@@ -21,6 +20,9 @@ public class Todo extends AbstractPersistable<Integer> {
 
   @Column(nullable = false)
   private String text;
+
+  @Column(nullable = false)
+  private Integer parentId;
 
   @Override
   public Integer getId() {
@@ -46,5 +48,13 @@ public class Todo extends AbstractPersistable<Integer> {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
   }
 }

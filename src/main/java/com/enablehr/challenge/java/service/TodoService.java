@@ -17,10 +17,11 @@ public class TodoService {
     @Autowired
     TodoRepository todoRepository;
 
-    public TodoResp create(String text) {
+    public TodoResp create(String text, Integer parentId) {
         Todo todo = new Todo();
         todo.setCompleted(Boolean.FALSE);
         todo.setText(text);
+        todo.setParentId(Objects.isNull(parentId) ? 0 : parentId);
         todoRepository.save(todo);
         return new TodoResp(todo);
     }
@@ -37,6 +38,7 @@ public class TodoService {
     }
 
     public void delete(Integer id) {
+        deleteParent(id);
         todoRepository.delete(todoRepository.getById(Objects.requireNonNull(id)));
     }
 
@@ -44,6 +46,7 @@ public class TodoService {
         Todo toUpdate = todoRepository.getById(Objects.requireNonNull(id));
         toUpdate.setCompleted(true);
         todoRepository.save(toUpdate);
+        markAsCompleteParent(id);
         return new TodoResp(toUpdate);
     }
 
@@ -66,6 +69,20 @@ public class TodoService {
             todoList.add(new TodoResp(data));
         });
         return todoList;
+    }
+
+    private void markAsCompleteParent(Integer parentId) {
+        todoRepository.findAll().forEach(data -> {
+            if (data.getParentId().equals(parentId))
+                markAsComplete(data.getId());
+        });
+    }
+
+    private void deleteParent(Integer parentId) {
+        todoRepository.findAll().forEach(data -> {
+            if (data.getParentId().equals(parentId))
+                delete(data.getId());
+        });
     }
 
 }

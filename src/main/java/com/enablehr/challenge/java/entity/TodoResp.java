@@ -4,8 +4,8 @@ public class TodoResp {
 
   private Integer id;
   private Boolean completed;
-
   private String text;
+  private Integer parentId;
 
   public Integer getId() {
     return id;
@@ -31,15 +31,18 @@ public class TodoResp {
     this.text = text;
   }
 
-  public TodoResp(Integer id, Boolean completed, String text) {
-    this.id = id;
-    this.completed = completed;
-    this.text = text;
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
   }
 
   public TodoResp(Todo body) {
     this.id = body.getId();
     this.completed = body.getCompleted();
     this.text = body.getText();
+    this.parentId = body.getParentId();
   }
 }

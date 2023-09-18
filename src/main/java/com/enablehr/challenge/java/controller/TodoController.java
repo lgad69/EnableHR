@@ -33,7 +33,7 @@ public class TodoController {
 
   @PostMapping("/add")
   public TodoResp create(@RequestBody Todo body) {
-    return todoService.create(body.getText());
+    return todoService.create(body.getText(), body.getParentId());
   }
 
   @GetMapping("/list")
@@ -74,6 +74,7 @@ public class TodoController {
             final Todo todo = new Todo();
             todo.setCompleted(Boolean.FALSE);
             todo.setText(text);
+            todo.setParentId(0);
             todoRepository.save(todo);
           });
   }
